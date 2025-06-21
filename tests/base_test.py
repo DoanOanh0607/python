@@ -1,14 +1,13 @@
 import pytest
 from selenium import webdriver
-from time import sleep
+from selenium.webdriver.common.by import By
+
 class BaseTest:
     @pytest.fixture(scope="class", autouse=True)
-    def setup(self,request):
+    def setup(self, request):
         self.driver = webdriver.Chrome()
         self.driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
-        print(f"\n The webof the page is: {self.driver.title}")
+        request.cls.driver = self.driver
 
-        self.driver.get("https://google.com/")
-        print(f"\n The title of the page is: {self.driver.title}")
-
-
+        yield
+        self.driver.quit()
